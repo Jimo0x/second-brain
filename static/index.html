@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Second Brain</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 10%22><circle cx=%225%22 cy=%225%22 r=%224%22 fill=%22%23e5172f%22/></svg>">
+<link rel="stylesheet" href="theme.css">
+<style>
+  body{overflow:hidden} main{height:calc(100vh - 57px);display:grid;grid-template-columns:300px 1fr}
+  aside{border-right:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+  #list{overflow:auto;flex:1;display:flex;flex-direction:column;gap:6px}
+  .n{padding:9px 11px;border-radius:var(--r-sm);cursor:pointer;border:1px solid transparent}
+  .n:hover{background:var(--surface)} .n.on{background:var(--redsoft);border-color:rgba(229,23,47,.4)}
+  .n b{display:block;font-size:13.5px} .tag{color:var(--red2);font:11px var(--mono);margin-right:6px}
+  section{position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .tabs{padding:0 20px;margin:0} [hidden]{display:none!important}
+  .pane{flex:1;overflow:auto;padding:20px}
+  #graph{width:100%;height:100%;cursor:grab}
+  .gtools{position:absolute;right:20px;bottom:20px;width:260px}
+  .tip{position:absolute;pointer-events:none;background:var(--surface2);border:1px solid var(--line2);padding:8px 10px;border-radius:8px;font-size:12px;max-width:260px;display:none}
+  .chat{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .q{align-self:flex-end;background:var(--red);color:#fff;padding:10px 14px;border-radius:14px 14px 4px 14px;max-width:70%}
+  .a{background:var(--surface);border:1px solid var(--line);padding:14px 16px;border-radius:14px 14px 14px 4px;line-height:1.65}
+  .a sup,.cite{color:var(--red2);font-weight:700;cursor:pointer}
+  .src{font-size:12.5px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--bg2);cursor:pointer}
+  .src:hover{border-color:var(--red)}
+  .ask{max-width:860px;margin:0 auto;display:flex;gap:10px;padding:16px 20px;width:100%}
+  .md h1{font-size:24px}.md h2{font-size:18px;margin-top:20px}.md p{margin:0 0 12px;line-height:1.7}
+  .md a.wl{background:var(--redsoft);padding:1px 6px;border-radius:5px;cursor:pointer}
+  .note-grid{display:grid;grid-template-columns:1fr 280px;gap:24px;max-width:1150px;margin:0 auto}
+  mark{background:rgba(229,23,47,.3);color:#fff;padding:0 2px;border-radius:3px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span>SECOND BRAIN <small>vos notes, reliées et interrogeables</small></div>
+  <div class="spacer"></div><span class="badge" id="count"></span>
+</header>
+<main>
+  <aside>
+    <input class="input" id="q" placeholder="🔍 Recherche sémantique…">
+    <div class="row"><button class="btn sm" id="newNote">＋ Note</button>
+      <label class="btn ghost sm" style="margin:0;text-transform:none;letter-spacing:0;color:var(--text)">⇪ Importer<input id="files" type="file" multiple accept=".md,.txt,.pdf" hidden></label>
+      <button class="btn ghost sm" id="ex">Exemples</button></div>
+    <div id="list"></div>
+  </aside>
+  <section>
+    <div class="tabs"><div class="tab on" data-p="graph">◉ Graphe des idées</div><div class="tab" data-p="ask">💬 Interroger</div><div class="tab" data-p="note">📄 Note</div></div>
+    <div class="pane" data-pane="graph" style="padding:0;position:relative"><canvas id="graph"></canvas><div class="tip" id="tip"></div>
+      <div class="card gtools"><label>Seuil de similarité : <span id="tv">0.06</span></label><input type="range" id="t" min="0.02" max="0.4" step="0.01" value="0.06">
+        <div class="dim" style="font-size:12px;margin-top:8px">Glisser pour déplacer · molette pour zoomer · clic pour ouvrir. Trait plein : lien [[wiki]] · tirets : proximité de sens · points : tag commun.</div></div></div>
+    <div class="pane" data-pane="ask" hidden style="display:flex;flex-direction:column;padding:0">
+      <div class="pane" id="chat"><div class="chat" id="msgs"><div class="empty">Posez une question : la réponse est construite à partir de vos notes, avec les sources.</div></div></div>
+      <div class="ask"><input class="input" id="question" placeholder="Ex. : comment stocker un mot de passe de façon sûre ?"><button class="btn" id="send">Demander</button></div>
+    </div>
+    <div class="pane" data-pane="note" hidden><div id="noteView" class="empty">Sélectionnez une note.</div></div>
+  </section>
+</main>
+<script src="ui.js"></script><script src="app.js"></script>
+</body>
+</html>
